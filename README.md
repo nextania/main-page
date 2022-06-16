@@ -1,2 +1,2 @@
-# main-page
-The landing page 
+# Main page
+Nextflow's homepage, made in Svelte.
