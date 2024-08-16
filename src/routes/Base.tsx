@@ -1,9 +1,11 @@
-import { useNavigate, useParams } from "@solidjs/router";
+import { A, useNavigate, useParams } from "@solidjs/router";
 import Home from "./Home";
 import { Match, onMount, Show, Switch } from "solid-js";
 import { styled } from "solid-styled-components";
 import Logo from "../components/Logo";
 import Button from "../components/primitive/Button";
+import { RiLogosGithubFill } from "solid-icons/ri";
+import { BsGlobe } from "solid-icons/bs";
 import About from "./About";
 import Resources from "./Resources";
 import Services from "./Services";
@@ -89,6 +91,8 @@ const Footer = styled.div`
 
 const FooterBody = styled.div`
     padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
 `;
 
 const FooterFooter = styled.div`
@@ -139,6 +143,44 @@ const FooterHeader = styled.div`
     }
     background-color: rgba(0, 0, 0, 0.6);
     font-size: 24px;
+`;
+
+const IconLink = styled.a`
+    color: white;
+    font-size: 24px;
+    user-select: none;
+`;
+
+const Monero = styled.p`
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-decoration: underline dotted;
+`;
+
+const FooterBodyMain = styled.div`
+    grid-column: span 6/span 6;
+
+`;
+
+const FooterBodyLinks = styled.div`
+    grid-column: span 6/span 6;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+`;
+
+const FooterBodySection = styled.div`
+    & > * + * {
+        margin-top: 10px;
+    }
+`;
+
+const Link = styled(A)`
+    color: white;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 const Base = () => {
@@ -209,16 +251,43 @@ const Base = () => {
                     <Button>Get started</Button>
                 </FooterHeader>
                 <FooterBody>
-                    <h1>Nextflow</h1>
-                    <p>Canada</p>
-                    <p>Monero:  <u><span title="Due to technical reasons, we are unable to accept any other payment method at this time.">4ALqMFtBLV5KHoH6JjPZeuX9WnFKp5kZ49tythEMhFqAbJciqX9Qy5y796kREaU5nLfM1py6Gjt5C9YT1paBNDk8VNzhzRr</span>
-                    </u></p>
+                    <FooterBodyMain>
+                        <h1>Nextflow</h1>
+                        <p>Canada</p>
+                        <IconLink href="https://github.com/Nextflow-Cloud"><RiLogosGithubFill /></IconLink>
+                        <Monero>Monero:  <span title="Due to technical reasons, we are unable to accept any other payment method at this time.">4ALqMFtBLV5KHoH6JjPZeuX9WnFKp5kZ49tythEMhFqAbJciqX9Qy5y796kREaU5nLfM1py6Gjt5C9YT1paBNDk8VNzhzRr</span></Monero>
+                    </FooterBodyMain>
+                    <FooterBodyLinks>
+                        <FooterBodySection>
+                            <h2>Links</h2>
+                            <p><Link href="/">Home</Link></p>
+                            <p><Link href="/about">About us</Link></p>
+                            <p><Link href="/services">Services</Link></p>
+                            <p><Link href="/resources">Resources</Link></p>
+                        </FooterBodySection>
+                        <FooterBodySection>
+                            <h2>Resources</h2>
+                            <p>Blog</p>
+                            <p>Documentation</p>
+                            <p>Support</p>
+                            <p>FAQ</p>
+                            <p>Contact us</p>
+                            <p>Terms of service</p>
+                            <p>Privacy policy</p>
+                        </FooterBodySection>
+                        <FooterBodySection>
+                            <h2>Services</h2>
+                            <p>Harmony</p>
+                            <p>Cloudnest</p>
+                            <p>Planner</p>
+                        </FooterBodySection>
+                    </FooterBodyLinks>
                 </FooterBody>
                 <FooterFooter>
-                    <p>© 2024 Nextflow Cloud Technologies and contributors.</p>
+                    <p>© {new Date().getUTCFullYear()} Nextflow Cloud Technologies and contributors.</p>
                     <FooterControls>
                         <FooterControl><Circle /> <span>All systems operational</span></FooterControl>
-                        <FooterControl>English</FooterControl>
+                        <FooterControl><BsGlobe /> <span>English</span></FooterControl>
                     </FooterControls>
                 </FooterFooter>
             </Footer>
