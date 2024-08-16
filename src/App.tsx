@@ -1,14 +1,13 @@
 import { Route, Router } from "@solidjs/router";
 import Base from "./routes/Base";
+import { StateProvider } from "./state";
 
 const App = () => {
 
   return (
     <>
-      <Router>
-        <Route path="/" component={Base} />
-        <Route path="/:page" component={Base} matchFilters={{ page: ["about", "services", "resources"] }} />
-      </Router>
+      <StateProvider>
+      </StateProvider>
     </>
   );
 };
