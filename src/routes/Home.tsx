@@ -1,5 +1,5 @@
 import { styled } from "solid-styled-components";
-import Button from "../components/primitive/Button";
+import Box from "../components/primitive/Box";
 
 const HomeBase = styled.div`
     display: flex;
@@ -19,7 +19,8 @@ const BigText = styled.h1`
     -webkit-text-fill-color: transparent;
     background-clip: text;
     line-height: 1.2;
-    margin-top: 150px;
+    /* TODO: This is commented for coming soon text only */
+    /* margin-top: 150px; */
     z-index: 10;
 `;
 
@@ -154,6 +155,30 @@ const HeroButtonSecondary = styled(HeroButton)`
     color: white;
 `;
 
+// TODO: BEGIN COMING SOON TEXT
+
+const ComingSoonContainer = styled.div`
+    height: 150px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+`;
+
+const ComingSoon = styled.div`
+    padding: 10px;
+    width: 60%;
+`;
+
+const ComingSoonBox = styled(Box)`
+    display: flex;
+    align-items: center;
+    & > * + * {
+        margin-left: 1rem;
+    }
+`;
+
+// TODO: END COMING SOON TEXT
+
 const Home = () => {
     const register = () => {
         location.href = "https://sso.nextflow.cloud/register?continue=" + encodeURIComponent("https://nextflow.cloud/authenticate");
@@ -161,6 +186,15 @@ const Home = () => {
     return (
         <HomeBase>
             <Lighting />
+            <ComingSoonContainer>
+                <ComingSoon>
+                    <ComingSoonBox type="warning">
+                        <h2>Notice</h2>
+                        {/* <p>Nextflow is currently in development. Some features may not be available yet.</p> */}
+                        <p>Nextflow is currently under construction. Many features may not work yet. If you create an account, we will notify you when they are ready.</p>
+                    </ComingSoonBox>
+                </ComingSoon>
+            </ComingSoonContainer>
             <BigText>Open source solutions for the future</BigText>
             <Description>
                 User-first cloud. Latest privacy and security standards. <br/>
