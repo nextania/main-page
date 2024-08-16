@@ -1,19 +1,22 @@
 import { useNavigate, useSearchParams } from "@solidjs/router";
-import { onMount } from "solid-js/types/server/reactive.js";
+import { onMount } from "solid-js";
+import { saveUser } from "../state";
 
 const Authenticate = () => {
     const [params] = useSearchParams();
     const n = useNavigate();
-    onMount(() => {
+    onMount(async () => {
         if (params.token) {
-            localStorage.setItem("token", params.token);
+            const result = (await saveUser(params.token).catch(() => {})) ?? false;
+            if (result) localStorage.setItem("token", params.token);
             const continuePath = params.continue || "/";
             n(continuePath);
         }
     });
     return (
         <div>
-            <h1>Authenticate</h1>
+            <p>Authenticating...</p>
+            <p>If you are stuck on this message, this is a bug.</p>
         </div>
     );
 };

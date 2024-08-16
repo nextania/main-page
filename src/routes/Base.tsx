@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from "@solidjs/router";
 import Home from "./Home";
-import { Match, Switch } from "solid-js";
+import { Match, onMount, Show, Switch } from "solid-js";
 import { styled } from "solid-styled-components";
 import Logo from "../components/Logo";
 import Button from "../components/primitive/Button";
 import About from "./About";
 import Resources from "./Resources";
 import Services from "./Services";
+import { saveUser, useStore } from "../state";
 
 const Header = styled.div`
     position: sticky;
@@ -143,11 +144,24 @@ const FooterHeader = styled.div`
 const Base = () => {
     const params = useParams();
     const n = useNavigate();
+    const store = useStore();
+
+    onMount(async () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            const result = (await saveUser(token).catch(() => {})) ?? false;
+            if (!result) localStorage.removeItem("token");
+        }
+    });
 
     const login = () => {
         // TODO:
         location.href = "https://sso.nextflow.cloud/login?continue=" + encodeURIComponent("https://nextflow.cloud/authenticate");
     };
+
+    const account = () => {
+        location.href = "https://sso.nextflow.cloud/manage";
+    }
 
     return (
         <>
@@ -161,7 +175,11 @@ const Base = () => {
                     <HeaderRoute active={params.page === "resources"} onClick={() => n("/resources")}>Resources</HeaderRoute>
                 </HeaderRouteList>
                 <AccountContainer>
-                    <Button onClick={login}>Log in</Button>
+                    <Show when={store.get("user") !== undefined} fallback={
+                        <Button onClick={login}>Log in</Button>
+                    }>
+                        <Button onClick={account}>Account</Button>
+                    </Show>
                 </AccountContainer>
             </Header>
             <Content>
