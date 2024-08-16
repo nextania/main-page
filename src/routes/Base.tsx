@@ -4,6 +4,9 @@ import { Match, Switch } from "solid-js";
 import { styled } from "solid-styled-components";
 import Logo from "../components/Logo";
 import Button from "../components/primitive/Button";
+import About from "./About";
+import Resources from "./Resources";
+import Services from "./Services";
 
 const Header = styled.div`
     position: sticky;
@@ -172,16 +175,13 @@ const Base = () => {
                         <Home />
                     </Match>
                     <Match when={params.page === "about"}>
-                        <div>About us</div>
-                        <div>Coming soon</div>
+                        <About />
                     </Match>
                     <Match when={params.page === "services"}>
-                        <div>Services</div>
-                        <div>Coming soon</div>
+                        <Services />
                     </Match>
                     <Match when={params.page === "resources"}>
-                        <div>Resources</div>
-                        <div>Coming soon</div>
+                        <Resources />
                     </Match>
                 </Switch>
             </Content>
