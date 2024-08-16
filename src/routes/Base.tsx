@@ -75,12 +75,75 @@ const HeaderRoute = styled.div`
     ` : ""}
 `;
 
+const Content = styled.div`
+    height: auto;
+`;
+
+const Footer = styled.div`
+    background-color: var(--secondary);
+`
+
+const FooterBody = styled.div`
+    padding: 30px;
+`;
+
+const FooterFooter = styled.div`
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+`;
+
+const FooterControls = styled.div`
+    display: flex;
+    & > * + * {
+        margin-left: 10px;
+    }
+`;
+
+const FooterControl = styled.div`
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    & > * + * {
+        margin-left: 8px;
+    }
+    cursor: default;
+    user-select: none;
+`;
+
+const Circle = styled.div`
+    width: 10px;
+    height: 10px;
+    background-color: #00db00;
+    border-radius: 50%;
+`;
+
+const FooterHeader = styled.div`
+    display: flex;
+    padding: 15px;
+    justify-content: center;
+    align-items: center;
+    & > * + * {
+        margin-left: 40px;
+    }
+    background-color: rgba(0, 0, 0, 0.6);
+    font-size: 24px;
+`;
+
 const Base = () => {
     const params = useParams();
     const n = useNavigate();
 
     const login = () => {
-        location.href = "https://sso.nextflow.cloud/login?continue=" + encodeURIComponent(location.href);
+        // TODO:
+        location.href = "https://sso.nextflow.cloud/login?continue=" + encodeURIComponent("https://nextflow.cloud/authenticate");
     };
 
     return (
@@ -98,7 +161,7 @@ const Base = () => {
                     <Button onClick={login}>Log in</Button>
                 </AccountContainer>
             </Header>
-            <div>
+            <Content>
                 <Switch fallback={
                     <div>
                         <h1>404</h1>
@@ -108,9 +171,39 @@ const Base = () => {
                     <Match when={!params.page}>
                         <Home />
                     </Match>
+                    <Match when={params.page === "about"}>
+                        <div>About us</div>
+                        <div>Coming soon</div>
+                    </Match>
+                    <Match when={params.page === "services"}>
+                        <div>Services</div>
+                        <div>Coming soon</div>
+                    </Match>
+                    <Match when={params.page === "resources"}>
+                        <div>Resources</div>
+                        <div>Coming soon</div>
+                    </Match>
                 </Switch>
-            </div>
-            <div>footer</div>
+            </Content>
+            <Footer>
+                <FooterHeader>
+                    <h2>Try Nextflow for free today</h2>
+                    <Button>Get started</Button>
+                </FooterHeader>
+                <FooterBody>
+                    <h1>Nextflow</h1>
+                    <p>Canada</p>
+                    <p>Monero:  <u><span title="Due to technical reasons, we are unable to accept any other payment method at this time.">4ALqMFtBLV5KHoH6JjPZeuX9WnFKp5kZ49tythEMhFqAbJciqX9Qy5y796kREaU5nLfM1py6Gjt5C9YT1paBNDk8VNzhzRr</span>
+                    </u></p>
+                </FooterBody>
+                <FooterFooter>
+                    <p>© 2024 Nextflow Cloud Technologies and contributors.</p>
+                    <FooterControls>
+                        <FooterControl><Circle /> <span>All systems operational</span></FooterControl>
+                        <FooterControl>English</FooterControl>
+                    </FooterControls>
+                </FooterFooter>
+            </Footer>
         </>
     )
 };
