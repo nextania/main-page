@@ -1,4 +1,5 @@
 import { styled } from "solid-styled-components";
+import Button from "../components/primitive/Button";
 
 const ServicesBase = styled.div`
     display: flex;
@@ -10,13 +11,40 @@ const ServicesBase = styled.div`
     margin-top: 2rem;
 `;
 
+const ServicesContainer = styled.div`
+    width: 60%;
+`;
+
+const Service = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const ServiceDescription = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+`;
+
+
+const LearnMore = styled(Button)`
+    height: 4rem;
+`
+
 const Services = () => {
     return (
         <ServicesBase>
             <h1>Services</h1>
-            <p>
-                Hmm, I wonder what this is all about. Coming soon!
-            </p>
+            <ServicesContainer>
+                <Service>
+                    <ServiceDescription>
+                        <h2>Harmony</h2>
+                        <p>Harmony is a communication app for individuals and organizations alike.</p>
+                    </ServiceDescription>
+                    <LearnMore>Learn more</LearnMore>
+                </Service>
+            </ServicesContainer>
         </ServicesBase>
     );
 }

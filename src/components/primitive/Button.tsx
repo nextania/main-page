@@ -26,9 +26,9 @@ const ButtonBase = styled.button`
     border: none;
 `;
 
-const Button = (props: ParentProps<{ onClick?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>, disabled?: boolean }>) => {
+const Button = (props: ParentProps<{ class?: string, onClick?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>, disabled?: boolean }>) => {
     return (
-        <ButtonBase onClick={props.onClick} disabled={props.disabled} type="submit">
+        <ButtonBase class={props.class} onClick={props.onClick} disabled={props.disabled} type="submit">
             {props.children}
         </ButtonBase>
     );
