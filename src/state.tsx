@@ -11,6 +11,8 @@ type Language = "en" | "fr";
 interface StateKeys {
     user: User;
     language: Language;
+    mobile: boolean;
+    responsiveMenuOpen: boolean;
 }
 
 class Store {
@@ -56,7 +58,7 @@ export const StateProvider = (props: ParentProps) => {
 };
 
 export const saveUser = async (token: string) => {
-    const response = await Promise.race([new Promise(r => setTimeout(r, 5000)), fetch("https://sso.nextflow.cloud/api/user", {
+    const response = await Promise.race([new Promise(r => setTimeout(r, 5000)), fetch("https://account.nextania.com/api/user", {
         headers: {
             Authorization: `Bearer ${token}`,
         },

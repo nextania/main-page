@@ -1,10 +1,10 @@
 import { A, useNavigate, useParams } from "@solidjs/router";
 import Home from "./Home";
-import { Match, onMount, Show, Switch } from "solid-js";
+import { createEffect, Match, onCleanup, onMount, Show, Switch } from "solid-js";
 import { styled } from "solid-styled-components";
-import Logo from "../components/Logo";
+import Wordmark, { LogoBase, LogoContainer } from "../components/Logo";
 import Button from "../components/primitive/Button";
-import { RiLogosGithubFill } from "solid-icons/ri";
+import { RiLogosGithubFill, RiSystemMenuFill } from "solid-icons/ri";
 import { BsGlobe } from "solid-icons/bs";
 import About from "./About";
 import Resources from "./Resources";
@@ -28,13 +28,6 @@ const Header = styled.div`
     justify-content: space-around;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-`;
-
-const LogoContainer = styled.div`
-    flex-grow: 1;
-    flex-basis: 0;
-    display: flex;
-    align-items: center;
 `;
 
 const AccountContainer = styled.div`
@@ -160,13 +153,22 @@ const Monero = styled.p`
 
 const FooterBodyMain = styled.div`
     grid-column: span 6/span 6;
-
+    word-wrap: break-word;
+    padding-right: 20px;
 `;
 
 const FooterBodyLinks = styled.div`
+    ${(props: { mobile: boolean }) => props.mobile ? `
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        & > * + * {
+            margin-top: 20px;
+        }
+    `: `
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    
+    `}
     grid-column: span 6/span 6;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
 `;
 
 const FooterBodySection = styled.div`
@@ -183,6 +185,16 @@ const Link = styled(A)`
     }
 `;
 
+const MobileMenuIcon = styled.div`
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+`;
+
+import logo from "/nextflow.svg";
+import ResponsiveMenu from "../components/ResponsiveMenu";
+
 const Base = () => {
     const params = useParams();
     const n = useNavigate();
@@ -198,31 +210,58 @@ const Base = () => {
 
     const login = () => {
         // TODO:
-        location.href = "https://sso.nextflow.cloud/login?continue=" + encodeURIComponent("https://nextflow.cloud/authenticate");
+        location.href = "https://account.nextania.com/login?continue=" + encodeURIComponent("https://nextania.com/authenticate");
     };
 
     const account = () => {
-        location.href = "https://sso.nextflow.cloud/manage";
-    }
+        location.href = "https://account.nextania.com/manage";
+    };
+
+    onMount(() => {
+        if (window.innerWidth < 768) store.set("mobile", true);
+        const listener = () => {
+            if (window.innerWidth < 768) store.set("mobile", true);
+            else store.set("mobile", false);
+        };
+        window.addEventListener("resize", listener);
+        onCleanup(() => window.removeEventListener("resize", listener));
+    });
+
+    const toggleMenu = () => store.set("responsiveMenuOpen", !store.get("responsiveMenuOpen"));
+
+    createEffect(() => {
+        if (store.get("responsiveMenuOpen")) {
+            document.body.style.setProperty("position", "fixed");
+        } else {
+            document.body.style.setProperty("position", "");
+        }
+    });
 
     return (
         <>
             <Header>
-                <LogoContainer onClick={() => n("/")}><Logo /></LogoContainer>
-                
-                <HeaderRouteList>
-                    <HeaderRoute active={!params.page} onClick={() => n("/")}>Home</HeaderRoute>
-                    <HeaderRoute active={params.page === "about"} onClick={() => n("/about")}>About us</HeaderRoute>
-                    <HeaderRoute active={params.page === "services"} onClick={() => n("/services")}>Services</HeaderRoute>
-                    <HeaderRoute active={params.page === "resources"} onClick={() => n("/resources")}>Resources</HeaderRoute>
-                </HeaderRouteList>
-                <AccountContainer>
-                    <Show when={store.get("user") !== undefined} fallback={
-                        <Button onClick={login}>Log in</Button>
-                    }>
-                        <Button onClick={account}>Account</Button>
-                    </Show>
-                </AccountContainer>
+                <LogoContainer onClick={() => n("/")}> <LogoBase src={logo} /> <Wordmark /></LogoContainer>
+                <Show when={!store.get("mobile")} fallback={
+                    <>
+                        <MobileMenuIcon onClick={toggleMenu}>
+                            <RiSystemMenuFill />
+                        </MobileMenuIcon>
+                    </>
+                }>
+                    <HeaderRouteList>
+                        <HeaderRoute active={!params.page} onClick={() => n("/")}>Home</HeaderRoute>
+                        <HeaderRoute active={params.page === "about"} onClick={() => n("/about")}>About us</HeaderRoute>
+                        <HeaderRoute active={params.page === "services"} onClick={() => n("/services")}>Services</HeaderRoute>
+                        <HeaderRoute active={params.page === "resources"} onClick={() => n("/resources")}>Resources</HeaderRoute>
+                    </HeaderRouteList>
+                    <AccountContainer>
+                        <Show when={store.get("user") !== undefined} fallback={
+                            <Button onClick={login}>Log in</Button>
+                        }>
+                            <Button onClick={account}>Account</Button>
+                        </Show>
+                    </AccountContainer>
+                </Show>
             </Header>
             <Content>
                 <Switch fallback={
@@ -247,17 +286,17 @@ const Base = () => {
             </Content>
             <Footer>
                 <FooterHeader>
-                    <h2>Try Nextflow for free today</h2>
+                    <h2>Try Nextania for free today</h2>
                     <Button>Get started</Button>
                 </FooterHeader>
                 <FooterBody>
                     <FooterBodyMain>
-                        <h1>Nextflow</h1>
+                        <h1>Nextania</h1>
                         <p>Canada</p>
-                        <IconLink href="https://github.com/Nextflow-Cloud"><RiLogosGithubFill /></IconLink>
-                        <Monero>Monero:  <span title="Due to technical reasons, we are unable to accept any other payment method at this time.">4ALqMFtBLV5KHoH6JjPZeuX9WnFKp5kZ49tythEMhFqAbJciqX9Qy5y796kREaU5nLfM1py6Gjt5C9YT1paBNDk8VNzhzRr</span></Monero>
+                        <IconLink href="https://github.com/nextania"><RiLogosGithubFill /></IconLink>
+                        <Monero>Monero:  <span title="Due to technical limitations, we are unable to accept form of payment at this time.">4ALqMFtBLV5KHoH6JjPZeuX9WnFKp5kZ49tythEMhFqAbJciqX9Qy5y796kREaU5nLfM1py6Gjt5C9YT1paBNDk8VNzhzRr</span></Monero>
                     </FooterBodyMain>
-                    <FooterBodyLinks>
+                    <FooterBodyLinks mobile={store.get("mobile") ?? false}>
                         <FooterBodySection>
                             <h2>Links</h2>
                             <p><Link href="/">Home</Link></p>
@@ -284,13 +323,14 @@ const Base = () => {
                     </FooterBodyLinks>
                 </FooterBody>
                 <FooterFooter>
-                    <p>© {new Date().getUTCFullYear()} Nextflow Cloud Technologies and contributors.</p>
+                    <p>© {new Date().getUTCFullYear()} Nextania Cloud Technologies and contributors.</p>
                     <FooterControls>
                         <FooterControl><Circle /> <span>All systems operational</span></FooterControl>
                         <FooterControl><BsGlobe /> <span>English</span></FooterControl>
                     </FooterControls>
                 </FooterFooter>
             </Footer>
+            <ResponsiveMenu />
         </>
     )
 };
