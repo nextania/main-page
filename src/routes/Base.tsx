@@ -192,7 +192,7 @@ const MobileMenuIcon = styled.div`
     padding: 8px;
 `;
 
-import logo from "/nextflow.svg";
+import logo from "/logo.svg";
 import ResponsiveMenu from "../components/ResponsiveMenu";
 
 const Base = () => {

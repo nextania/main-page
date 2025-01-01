@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
 import { styled } from "solid-styled-components";
 import Wordmark, { LogoBase, LogoContainer } from "./Logo";
-import logo from "/nextflow.svg";
+import logo from "/logo.svg";
 import { useNavigate } from "@solidjs/router";
 import { AiOutlineClose } from "solid-icons/ai";
 import { useStore } from "../state";
