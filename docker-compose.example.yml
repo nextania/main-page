@@ -1,0 +1,10 @@
+version: "3.9"
+
+networks:
+  default:
+    name: npm
+
+services:
+  main-page:
+    build: .
+    restart: always
