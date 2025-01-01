@@ -319,6 +319,7 @@ const Home = () => {
                 <Section>
                     <SectionLeft>
                         <Gradient3>
+                            {/* Open. */}
                             Modern.
                         </Gradient3>
                         <SectionText>
